@@ -50,44 +50,100 @@ import Qs from "qs";
 
 export default {
   methods: {
+    stuLogin() {
+      var data = {
+        id: this.user.name,
+        password: this.user.password,
+      };
+      var a = JSON.stringify(data);
+      axios.defaults.withCredentials = true; //请求携带cookie
+      let b = new URLSearchParams();
+      b.append("id", this.user.name);
+      b.append("password", this.user.password);
+      request({
+        method: "post",
+        url: "/user/login",
+        data: Qs.stringify(data),
+        // headers:{'Content-Type':'application/x-www-form-urlencoded'}
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.code == 200) {
+            this.$message.success("登陆成功");
+            request({
+              method: "get",
+              url: "/user/stuInfo",
+              params: {
+                id: this.user.name,
+              },
+            }).then((res) => {
+              console.log("查询学生信息");
+              console.log(res.data.data);
+              let userInfo = JSON.stringify(res.data.data);
+              window.localStorage.setItem("userInfo", userInfo); //localstorge存信息
+              window.localStorage.setItem("userType", 'student');
+              this.$cookies.set("userID", this.user.name);
+              this.$router.push("/home"); //跳转至/home
+              // console.log(this.$cookies.get("user"));
+            });
+          } else {
+            this.$message.error("登录失败");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    teacherLogin() {
+      var data = {
+        id: this.user.name,
+        password: this.user.password,
+      };
+      axios.defaults.withCredentials = true; //请求携带cookie
+      request({
+        method: "post",
+        url: "/user/teacherLogin",
+        data: Qs.stringify(data),
+        // headers:{'Content-Type':'application/x-www-form-urlencoded'}
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.code == 200) {
+            this.$message.success("登陆成功");
+            request({
+              method: "get",
+              url: "/user/teaInfo",
+              params: {
+                id: this.user.name,
+              },
+            }).then((res) => {
+              console.log("查询教师信息");
+              console.log(res.data.data);
+              let userInfo = JSON.stringify(res.data.data);
+              window.localStorage.setItem("userInfo", userInfo); //localstorge存信息
+              window.localStorage.setItem("userType", 'teacher');
+              this.$cookies.set("userID", this.user.name);
+              this.$router.push("/home"); //跳转至/home
+              // console.log(this.$cookies.get("user"));
+            });
+          } else {
+            this.$message.error("登录失败");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     login() {
       //validate()表单预验证，ref
       this.$refs.loginFormRef.validate((valid) => {
         if (!valid) return;
-        var data = {
-          id: this.user.name,
-          password: this.user.password,
-        };
-        var a = JSON.stringify(data);
-        // console.log('JSON:'+a);
-        axios.defaults.withCredentials = true; //请求携带cookie
-        let b = new URLSearchParams();
-
-        // console.log('Qs:'+Qs.stringify(data));
-        b.append("id", this.user.name);
-        b.append("password", this.user.password);
-        // console.log('urlserchparams:');
-        // console.log(b);
-
-        request({
-          method: "post",
-          url: "/user/login",
-          data: Qs.stringify(data),
-          // headers:{'Content-Type':'application/x-www-form-urlencoded'}
-        }).then((res) => {
-          console.log(res);
-          if (res.data.code == 200) {
-            this.$message.success('登陆成功');
-            this.$router.push('/home');//跳转至/home
-            console.log(this.$cookies.get('user'));
-          }
-          else {
-            this.$message.error('登录失败')
-          }
-        }).catch(err=>{
-          console.log(err);
-          
-        });
+        if (this.value == "student") {
+          this.stuLogin();
+        }
+        if (this.value == "teacher") {
+          this.teacherLogin();
+        }
 
         // axios({
         //   url:'http://localhost:3000/user/login',
@@ -102,15 +158,7 @@ export default {
         // }).then(res=>{
         //   console.log(res);
         // })
-        // axios({
-        //   url:'http://localhost:3000/user/stuInfo',
-        //   method:'get',
-        //   params:{
-        //     id : this.user.name
-        //   }
-        // }).then(res=>{
-        //   console.log(res);
-        // })
+
       });
     },
     //resetFields()表单重置
@@ -177,7 +225,7 @@ export default {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(0, -50%);
+  transform: translate(0, -70%);
 }
 .login_form {
   position: absolute;
