@@ -8,7 +8,13 @@ import Question from '../components/question'
 import Profile from '../components/profile'
 import CourseInfo from '../components/courseinfo'
 import Document from '../components/courseinfo/document'
-import HomeworkDetail from '../components/courseinfo/homework'
+import CourseHomework from '../components/courseinfo/homework'
+import Notice from '../components/courseinfo/notice'
+import QuestionInfo from '../components/courseinfo/question'
+import Grade from '../components/courseinfo/grade'
+import SubmitNotice from '../components/courseinfo/submitnotice'
+import SubmitHomework from '../components/courseinfo/submithomework'
+
 
 
 import Cookies from '../utils/cookieUtils'
@@ -53,9 +59,24 @@ const routes = [
         path: '/courseinfo',
         component: Document
       }, {
-        path: '/homeworkdetail',
-        component: HomeworkDetail
-      }]
+        path: '/coursehomework',
+        component: CourseHomework
+      },{
+        path: '/notice',
+        component: Notice
+      },{
+        path: '/questioninfo',
+        component: QuestionInfo
+      },{
+        path: '/grade',
+        component: Grade
+      },{
+        path: '/submitnotice',
+        component: SubmitNotice
+      },{
+        path: '/submithomework',
+        component: SubmitHomework
+      },]
     }]
   }
 
@@ -67,7 +88,7 @@ const router = new VueRouter({
   routes
 })
 
-
+//路由守卫这里有点问题，
 //路由守卫 to将要去哪，from从哪来，next()放行，next('/login')强制跳转
 router.beforeEach((to, from, next) => {
   let isLogin = false;

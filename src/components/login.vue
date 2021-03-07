@@ -60,6 +60,8 @@ export default {
       let b = new URLSearchParams();
       b.append("id", this.user.name);
       b.append("password", this.user.password);
+      // console.log(data);
+      // console.log(Qs.stringify(data));
       request({
         method: "post",
         url: "/user/login",
@@ -107,7 +109,7 @@ export default {
         // headers:{'Content-Type':'application/x-www-form-urlencoded'}
       })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.code == 200) {
             this.$message.success("登陆成功");
             request({

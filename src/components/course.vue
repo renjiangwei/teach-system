@@ -217,6 +217,7 @@ export default {
         path: "/courseinfo",
         query: { id: this.course[i].id, name: this.course[i].name },
       });
+      //push传入id和name，
       // this.$router.push({ name: 'courseinfo', params: { id: this.course[i].id}});
     },
   },
