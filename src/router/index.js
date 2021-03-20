@@ -14,13 +14,17 @@ import QuestionInfo from '../components/courseinfo/question'
 import Grade from '../components/courseinfo/grade'
 import SubmitNotice from '../components/courseinfo/submitnotice'
 import SubmitHomework from '../components/courseinfo/submithomework'
+import HomeworkDetail from '../components/courseinfo/homeworkdetail'
+import SubmitQuestion from '../components/courseinfo/submitquestion'
+import QuestionDetail from '../components/courseinfo/questiondetail'
+import StudentManager from '../components/courseinfo/studentmanager'
 
 
 
 import Cookies from '../utils/cookieUtils'
 import { request } from '../network/request'
 
-
+//this.$router.push会报错
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
@@ -60,13 +64,19 @@ const routes = [
         component: Document
       }, {
         path: '/coursehomework',
-        component: CourseHomework
+        component: CourseHomework,
       },{
         path: '/notice',
         component: Notice
       },{
         path: '/questioninfo',
         component: QuestionInfo
+      },{
+        path: '/submitquestion',
+        component: SubmitQuestion
+      },{
+        path: '/questiondetail',
+        component: QuestionDetail
       },{
         path: '/grade',
         component: Grade
@@ -76,7 +86,13 @@ const routes = [
       },{
         path: '/submithomework',
         component: SubmitHomework
-      },]
+      },{
+        path: '/homeworkdetail',
+        component: HomeworkDetail
+      },{
+        path: '/studentmanager',
+        component: StudentManager
+      }]
     }]
   }
 

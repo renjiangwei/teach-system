@@ -37,6 +37,7 @@ import moment from "moment";
 import axios from "axios";
 import Qs from "querystring";
 export default {
+  inject:['reload'],
   data() {
     return {
       query: {
@@ -74,8 +75,8 @@ export default {
       }).then((res) => {
         console.log(res.data);
         if (res.data.code == 200) {
-          // this.$message.success("删除成功")
-          location.reload();
+          this.reload();
+          this.$message.success("删除成功")
         }
       });
     },

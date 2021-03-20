@@ -62,11 +62,15 @@ export default {
       b.append("password", this.user.password);
       // console.log(data);
       // console.log(Qs.stringify(data));
+      let c = new FormData();
+      c.append("id",this.user.name)
+      c.append("password",this.user.password)
       request({
         method: "post",
         url: "/user/login",
         data: Qs.stringify(data),
         // headers:{'Content-Type':'application/x-www-form-urlencoded'}
+        // headers:{'Content-Type':'application/json'}
       })
         .then((res) => {
           console.log(res.data);

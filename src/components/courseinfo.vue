@@ -18,16 +18,22 @@
       >
     </el-menu>
     <div class="line"></div>
-    <router-view></router-view>
+    <router-view v-if="isRouterAlive"></router-view>
     <!-- 这里是子模板 -->
   </div>
 </template>
 <script>
 import { request } from "../network/request";
 export default {
+  provide() {//注意这个的使用方法
+    return {
+      reload: this.reload,//提供依赖reload是一个方法，子组件注入依赖即可以使用这个方法
+    };
+  },
   data() {
     return {
       activeIndex: "/courseinfo",
+      isRouterAlive: true,
       navbarList: [
         {
           id: "1",
@@ -57,7 +63,7 @@ export default {
       ],
       courseinfo: {},
       sc: [],
-      tc:[],
+      tc: [],
       query: {
         id: this.$route.query.id,
         name: this.$route.query.name,
@@ -76,6 +82,19 @@ export default {
         },
       });
     },
+    setTeacherNavbar() {
+      //设置navbar多加一条学生名单管理
+      let newNavbar = {
+        id: "6",
+        name: "学生管理",
+        path: "/studentmanager",
+      };
+      this.navbarList.push(newNavbar);
+    },
+    reload() {//用于子模板重新加载
+      this.isRouterAlive = false;
+      this.$nextTick(() => (this.isRouterAlive = true));
+    },
   },
   created() {
     //创建完成时候根据当前路径名称，设置activeIndex，从而保证刷新界面，对应导航栏处于active状态
@@ -88,7 +107,19 @@ export default {
     //如果有，则查询课程信息，用于此模板展示
     let id = JSON.parse(localStorage.getItem("userInfo")).id;
     let type = localStorage.getItem("userType");
+    //还要补充作业权限控制哦
 
+    //权限为教师修改navbar的值，
+    if (type === "teacher") {
+      this.setTeacherNavbar();
+    }
+    //学生不能访问/studentmanager
+    if (type === "student") {
+      if (this.$route.path === "/studentmanager") {
+        this.$router.go(-1);
+        this.$message.error("没有权限");
+      }
+    }
     if (type === "student") {
       request({
         url: "/course/sc",
@@ -101,7 +132,7 @@ export default {
           if (res.data.code === 200) {
             this.sc = res.data.lesson; //将学生选课信息存起来，
             return request({
-              url: "/course/courseinfobyid",
+              url: "/course/courseinfobyid", //查询该课程基本信息用于展示
               methods: "get",
               params: {
                 id: this.query.id,
@@ -126,9 +157,9 @@ export default {
           if (!this.auth) {
             // history.back();
             this.$router.go(-1);
-            window.onload = ()=>{
+            window.onload = () => {
               this.$message.error("没有该课程权限");
-            }
+            };
           }
         });
     } else if (type === "teacher") {
@@ -168,7 +199,7 @@ export default {
           }
           if (!this.auth) {
             this.$message.error("没有该课程权限");
-            this.$router.go(-1)
+            this.$router.go(-1);
           }
         });
     }

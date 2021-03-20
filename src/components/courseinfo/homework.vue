@@ -3,12 +3,14 @@
     <el-button
       class="send-homework"
       @click="addHomework()"
+      v-if="type === 'teacher'"
       >发送作业</el-button
     >
     <el-card
       class="box-card"
-      v-for="item in this.homeworkList"
+      v-for="(item,index) in this.homeworkList"
       :key="item.homework_id"
+      @click.native="homeworkCardClick(item.homework_id,index)"
     >
       <div class="content">{{ item.content }}</div>
       <div
@@ -17,21 +19,22 @@
         :key="index"
       >
         {{ getNewPath(item2) }}
-        <el-button @click="downloadFile(item2)"> 下载 </el-button>
+        <el-button @click.stop="downloadFile(item2)"> 下载 </el-button>
       </div>
       <div class="time">
-        {{ item.create_time }}
-        {{ item.deadline }}
+        <!-- {{ item.create_time }} -->
+        截止日期：{{ item.deadline }}
       </div>
-      <div>
+      <div @click.stop="">
         <el-popconfirm
           title="确定删除该作业吗？"
           @confirm="deleteHomework(item.homework_id)"
           :key="item.homework_id"
+          v-if="type === 'teacher'"
         >
           <!-- @confirm是确认事件 -->
           <el-button slot="reference" type="danger" class="delete-button"
-            >删除</el-button
+            >删除作业</el-button
           >
         </el-popconfirm>
       </div>
@@ -42,6 +45,7 @@
 import { request } from "../../network/request";
 import Qs from 'querystring'
 export default {
+  inject:['reload'],
   data() {
     return {
       query: {
@@ -49,6 +53,7 @@ export default {
         name: this.$route.query.name,
       },
       homeworkList: [], //请求到的作业数组放到里面
+      type:""
     };
   },
   methods: {
@@ -99,7 +104,8 @@ export default {
         data: Qs.stringify(data),
       }).then((res) => {
         if(res.data.code == 200){
-          location.reload();
+          this.reload();
+          this.$message.success('删除成功')
         }
       });
     },
@@ -110,6 +116,19 @@ export default {
         query :{
           id : this.query.id,
           name : this.query.name
+        }
+      })
+    },
+    homeworkCardClick(i,index){
+      console.log("homeworkCardClick",i);
+      //将作业题目存在localstorge中，
+      let homeworkInfo = JSON.stringify(this.homeworkList[index])
+      window.localStorage.setItem('homeworkInfo',homeworkInfo)
+      this.$router.push({
+        path:"/homeworkdetail",
+        query:{
+          id : this.query.id,//课程id
+          homeworkid : i //传的作业id
         }
       })
     }
@@ -124,6 +143,8 @@ export default {
     }).then((res) => {
       this.homeworkList = res.data.data;
     });
+    this.type = window.localStorage.getItem("userType");
+    console.log(this.type);
   },
 };
 </script>
@@ -144,6 +165,7 @@ export default {
 .box-card {
   width: 700px;
   margin: 30px 0px 30px 30px;
+  cursor: pointer;
 }
 .content {
   word-wrap: break-word;

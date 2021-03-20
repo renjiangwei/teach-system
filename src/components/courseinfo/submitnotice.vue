@@ -79,7 +79,6 @@ export default {
         method: "post",
         data: Qs.stringify(data),
       }).then((res) => {
-        console.log(res);
         if (res.data.code == 200) {
           this.$message.success("提交成功");
           this.$router.push({

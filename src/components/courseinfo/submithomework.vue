@@ -41,7 +41,7 @@
           @click="submitForm"
           >上传到服务器</el-button
         >
-        <div slot="tip" class="el-upload__tip">只能上传英文名文件</div>
+        <div slot="tip" class="el-upload__tip">tip</div>
       </el-upload>
     </el-form>
   </div>
@@ -91,7 +91,7 @@ export default {
         formData.append("files", this.files.files[i].raw);
         i++;
       }
-      var date = moment().format("yyyy-M-DD HH:mm:ss"); //moment库生成msql的datetime类型数据
+      var date = moment().format("yyyy-MM-DD HH:mm:ss"); //moment库生成msql的datetime类型数据
       var teacherid = JSON.parse(localStorage.getItem("userInfo")).id;
       formData.append("courseid", this.query.id);
       formData.append("content", this.formData.title);
@@ -102,6 +102,10 @@ export default {
         method: "post",
         url: "/homework/uploadhomework",
         data: formData,
+        Headers: {
+          "Content-Type": "application/json;charset=utf8",
+          //添加上这个 ，否则node接收的文件参数编码有问题
+        },
       }).then((res) => {
         if (res.data.code == 200) {
           this.$router.push({
@@ -111,6 +115,7 @@ export default {
               name: this.query.name,
             },
           });
+          this.$message.success("作业创建成功");
         }
       });
     },
@@ -133,6 +138,17 @@ export default {
               url: "/homework/uploadhomework",
               method: "post",
               data: formData,
+            }).then((res) => {
+              if (res.data.code == 200) {
+                this.$router.push({
+                  path: "/coursehomework",
+                  query: {
+                    id: this.query.id,
+                    name: this.query.name,
+                  },
+                });
+                this.$message.success("作业创建成功");
+              }
             });
             //不执行下面的submit方法了，如果有文件，则执行下面的代码，避免两次post
             return;
