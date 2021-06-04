@@ -18,7 +18,8 @@ import HomeworkDetail from '../components/courseinfo/homeworkdetail'
 import SubmitQuestion from '../components/courseinfo/submitquestion'
 import QuestionDetail from '../components/courseinfo/questiondetail'
 import StudentManager from '../components/courseinfo/studentmanager'
-
+import SubmitDocument from '../components/courseinfo/submitdocument'
+import GradeDetail from '../components/courseinfo/gradedetail'
 
 
 import Cookies from '../utils/cookieUtils'
@@ -63,33 +64,39 @@ const routes = [
         path: '/courseinfo',
         component: Document
       }, {
+        path: '/submitdocument',
+        component: SubmitDocument
+      }, {
         path: '/coursehomework',
         component: CourseHomework,
-      },{
+      }, {
         path: '/notice',
         component: Notice
-      },{
+      }, {
         path: '/questioninfo',
         component: QuestionInfo
-      },{
+      }, {
         path: '/submitquestion',
         component: SubmitQuestion
-      },{
+      }, {
         path: '/questiondetail',
         component: QuestionDetail
-      },{
+      }, {
         path: '/grade',
         component: Grade
-      },{
+      }, {
+        path: '/gradedetail',
+        component: GradeDetail
+      }, {
         path: '/submitnotice',
         component: SubmitNotice
-      },{
+      }, {
         path: '/submithomework',
         component: SubmitHomework
-      },{
+      }, {
         path: '/homeworkdetail',
         component: HomeworkDetail
-      },{
+      }, {
         path: '/studentmanager',
         component: StudentManager
       }]

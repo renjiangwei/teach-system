@@ -56,7 +56,7 @@ export default {
         password: this.user.password,
       };
       var a = JSON.stringify(data);
-      axios.defaults.withCredentials = true; //请求携带cookie
+      // axios.defaults.withCredentials = true; //请求携带cookie
       let b = new URLSearchParams();
       b.append("id", this.user.name);
       b.append("password", this.user.password);
@@ -105,7 +105,6 @@ export default {
         id: this.user.name,
         password: this.user.password,
       };
-      axios.defaults.withCredentials = true; //请求携带cookie
       request({
         method: "post",
         url: "/user/teacherLogin",

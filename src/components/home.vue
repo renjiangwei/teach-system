@@ -34,10 +34,10 @@
             <i class="el-icon-menu"></i>
             <span slot="title">课程</span>
           </el-menu-item>
-          <el-menu-item index="/homework" @click="homework()">
+          <!-- <el-menu-item index="/homework" @click="homework()">
             <i class="el-icon-menu"></i>
             <span slot="title">作业</span>
-          </el-menu-item>
+          </el-menu-item> -->
           <el-menu-item index="/question" @click="question()">
             <i class="el-icon-document"></i>
             <span slot="title">提问</span>

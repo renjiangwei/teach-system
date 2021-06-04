@@ -20,6 +20,8 @@
       <el-table-column prop="stu_id" label="学号" width="300">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="300"> </el-table-column>
+      <el-table-column prop="class_name" label="班级" width="300"> </el-table-column>
+
       <el-table-column label="操作">
         <!-- <el-button type="danger">删除</el-button> -->
         <!-- 

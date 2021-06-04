@@ -60,14 +60,13 @@ export default {
         },
       }).then((res) => {
         this.notice = res.data.data;
-        console.log(res.data.data);
+        // console.log(res.data.data);
       });
     },
     deleteNotice(i) {
       var data = {
         id: i + "",
       };
-      axios.defaults.withCredentials = true; //请求携带cookie
       request({
         method: "post",
         url: "/notice/deletenotice",

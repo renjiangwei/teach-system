@@ -202,7 +202,9 @@ export default {
         answer_content: this.firstAnswer,
         answer_create_time: answer_create_time,
         answer_user_name: userInfo.name,
+        answer_user_id: userInfo.id,
         answer_user_type: userType,
+        answer_scourse: this.query.id
       };
       request({
         url: "/question/uploadanswer",
@@ -235,7 +237,9 @@ export default {
         answer_content: this.cardBottomAnswer,
         answer_create_time: answer_create_time,
         answer_user_name: userInfo.name,
+        answer_user_id: userInfo.id,
         answer_user_type: userType,
+        answer_scourse: this.query.id
       };
       request({
         url: "/question/uploadanswer",
@@ -243,7 +247,7 @@ export default {
         data: Qs.stringify(data),
       }).then((res) => {
         if (res.data.code == 200) {
-          location.reload();
+          this.reload();
           this.$message.success("发送成功");
         } else {
           this.$message.error("发送失败");

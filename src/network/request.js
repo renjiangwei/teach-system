@@ -1,10 +1,9 @@
 import axios from 'axios'
-axios.defaults.withCredentials = true
 export function request(config){
   const instance = axios.create({
     baseURL: 'http://localhost:3000',
     timeout: 10000,
-    withCredentials : true,
+    // withCredentials : true,
   })
   return instance(config)//return一个promise可以直接调用.then().catch()
 }
